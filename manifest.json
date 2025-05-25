@@ -1,0 +1,23 @@
+{
+  "name": "Calculadora de Desenvolvimento Motor Infantil",
+  "short_name": "Calc. Desenvolvimento",
+  "description": "Avalie o desenvolvimento psicomotor da criança com base em marcos científicos por faixa etária",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

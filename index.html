@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4CAF50">
+  <title>Calculadora de Desenvolvimento Motor</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    /* Reset e estilos base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Layout principal */
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho */
+    .app-header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .app-header a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Conteúdo principal */
+    .app-main {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* Rodapé */
+    .app-footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 14px;
+      border-top: 1px solid #eee;
+    }
+
+    /* Cartão de boas-vindas */
+    .welcome-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+    }
+
+    .welcome-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .welcome-card h2 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .welcome-subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    /* Formulários */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+
+    .form-group input.error {
+      border-color: #f44336;
+    }
+
+    .form-error {
+      color: #f44336;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    /* Botões */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
+      text-align: center;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3e8e41;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary:disabled {
+      background-color: #a5d6a7;
+      cursor: not-allowed;
+    }
+
+    /* Alertas e mensagens */
+    .alert {
+      padding: 12px 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      border-left: 4px solid;
+    }
+
+    .alert-success {
+      background-color: #e8f5e9;
+      border-color: #4caf50;
+      color: #2e7d32;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .app-container {
+        padding: 10px;
+      }
+      
+      .app-header {
+        padding: 15px;
+      }
+      
+      .app-main {
+        padding: 20px;
+      }
+      
+      .welcome-card {
+        padding: 20px;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+      }
+    }
+
+    /* Dashboard após entrada do nome */
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .dashboard-welcome {
+      font-size: 18px;
+      color: #4CAF50;
+    }
+
+    .dashboard-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard-actions .btn {
+      width: auto;
+    }
+
+    .dashboard-content {
+      margin-top: 20px;
+    }
+
+    .dashboard-card {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .dashboard-card h3 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-card p {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1><a href="/">Calculadora de Desenvolvimento Motor</a></h1>
+    </header>
+
+    <main class="app-main">
+      <!-- Tela de boas-vindas e entrada do nome -->
+      <div class="welcome-container" id="welcome-screen">
+        <div class="welcome-card">
+          <h2>Bem-vindo(a)</h2>
+          <p class="welcome-subtitle">Informe seu nome para continuar</p>
+          
+          <!-- Alerta de sucesso (inicialmente oculto) -->
+          <div class="alert alert-success" id="welcome-success" style="display: none;">
+            Nome salvo com sucesso!
+          </div>
+          
+          <form id="welcome-form">
+            <div class="form-group">
+              <label for="professional-name">Nome do Profissional</label>
+              <input 
+                type="text" 
+                id="professional-name" 
+                name="professional-name" 
+                placeholder="Seu nome completo" 
+                required
+              >
+              <div class="form-error" id="name-error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="professional-specialty">Especialidade</label>
+              <input 
+                type="text" 
+                id="professional-specialty" 
+                name="professional-specialty" 
+                placeholder="Sua especialidade (opcional)"
+              >
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn btn-primary" 
+              id="welcome-button"
+            >
+              Continuar
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Dashboard (inicialmente oculto) -->
+      <div class="dashboard" id="dashboard-screen">
+        <div class="dashboard-header">
+          <div class="dashboard-welcome">
+            Olá, <span id="user-name-display">Profissional</span>!
+          </div>
+          <button class="btn btn-primary" id="change-name-btn" style="width: auto; padding: 8px 16px; font-size: 14px;">
+            Alterar Nome
+          </button>
+        </div>
+
+        <div class="dashboard-actions">
+          <button class="btn btn-primary" id="new-assessment-btn">
+            Nova Avaliação
+          </button>
+        </div>
+
+        <div class="dashboard-content">
+          <div class="dashboard-card">
+            <h3>Calculadora de Desenvolvimento Motor Infantil</h3>
+            <p>Esta aplicação permite avaliar o desenvolvimento psicomotor da criança com base em marcos científicos por faixa etária, comparando a evolução motora em relação à idade cronológica.</p>
+            <p>Clique em "Nova Avaliação" para iniciar.</p>
+          </div>
+
+          <div class="dashboard-card">
+            <h3>Base Científica</h3>
+            <p>A calculadora foi desenvolvida com base em escalas e referências científicas reconhecidas, incluindo a Escala Motora Infantil de Alberta (AIMS), Escala de Desenvolvimento Motor (EDM), Teste de Triagem do Desenvolvimento Denver II, entre outras.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Baseado em escalas e marcos de desenvolvimento reconhecidos cientificamente.</p>
+      <p>© 2025 Calculadora de Desenvolvimento Motor</p>
+    </footer>
+  </div>
+
+  <script>
+    // Verificar se o navegador suporta IndexedDB
+    if (!window.indexedDB) {
+      console.log("Seu navegador não suporta IndexedDB. Algumas funcionalidades podem não funcionar corretamente.");
+    }
+
+    // Configuração do IndexedDB
+    let db;
+    const dbName = "CalcDesenvolvimentoDB";
+    const dbVersion = 1;
+    
+    // Abrir/criar o banco de dados
+    const request = indexedDB.open(dbName, dbVersion);
+    
+    request.onerror = function(event) {
+      console.error("Erro ao abrir o banco de dados:", event.target.errorCode);
+    };
+    
+    request.onupgradeneeded = function(event) {
+      db = event.target.result;
+      
+      // Criar object store para dados do profissional
+      if (!db.objectStoreNames.contains("profissional")) {
+        const profissionalStore = db.createObjectStore("profissional", { keyPath: "id" });
+      }
+      
+      // Criar object store para avaliações (para futuras implementações)
+      if (!db.objectStoreNames.contains("avaliacoes")) {
+        const avaliacoesStore = db.createObjectStore("avaliacoes", { keyPath: "id", autoIncrement: true });
+        avaliacoesStore.createIndex("data", "data", { unique: false });
+        avaliacoesStore.createIndex("nomePaciente", "nomePaciente", { unique: false });
+      }
+    };
+    
+    request.onsuccess = function(event) {
+      db = event.target.result;
+      console.log("Banco de dados aberto com sucesso");
+      
+      // Verificar se já existe um profissional cadastrado
+      checkProfissionalData();
+    };
+
+    // Elementos do DOM
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const dashboardScreen = document.getElementById('dashboard-screen');
+    const welcomeForm = document.getElementById('welcome-form');
+    const professionalNameInput = document.getElementById('professional-name');
+    const professionalSpecialtyInput = document.getElementById('professional-specialty');
+    const nameError = document.getElementById('name-error');
+    const welcomeSuccess = document.getElementById('welcome-success');
+    const userNameDisplay = document.getElementById('user-name-display');
+    const changeNameBtn = document.getElementById('change-name-btn');
+    const newAssessmentBtn = document.getElementById('new-assessment-btn');
+    
+    // Verificar dados do profissional no IndexedDB
+    function checkProfissionalData() {
+      const transaction = db.transaction(["profissional"], "readonly");
+      const objectStore = transaction.objectStore("profissional");
+      const request = objectStore.get(1); // Usamos ID fixo 1 para o profissional
+      
+      request.onsuccess = function(event) {
+        const profissionalData = event.target.result;
+        
+        if (profissionalData) {
+          // Se já existe um profissional, mostrar dashboard
+          userNameDisplay.textContent = profissionalData.nome;
+          welcomeScreen.style.display = 'none';
+          dashboardScreen.style.display = 'block';
+        } else {
+          // Se não existe, manter tela de boas-vindas
+          welcomeScreen.style.display = 'flex';
+          dashboardScreen.style.display = 'none';
+        }
+      };
+    }
+    
+    // Salvar dados do profissional
+    function saveProfissionalData(nome, especialidade) {
+      const transaction = db.transaction(["profissional"], "readwrite");
+      const objectStore = transaction.objectStore("profissional");
+      
+      const profissionalData = {
+        id: 1, // ID fixo para facilitar recuperação
+        nome: nome,
+        especialidade: especialidade,
+        dataCadastro: new Date()
+      };
+      
+      const request = objectStore.put(profissionalData);
+      
+      request.onsuccess = function() {
+        console.log("Dados do profissional salvos com sucesso");
+        userNameDisplay.textContent = nome;
+        
+        // Mostrar mensagem de sucesso
+        welcomeSuccess.style.display = 'block';
+        
+        // Após 1.5 segundos, mudar para o dashboard
+        setTimeout(function() {
+          welcomeScreen.style.display = 'none';
+          dashboardScreen.style.display = 'block';
+        }, 1500);
+      };
+      
+      request.onerror = function(event) {
+        console.error("Erro ao salvar dados do profissional:", event.target.error);
+        nameError.textContent = "Erro ao salvar dados. Por favor, tente novamente.";
+      };
+    }
+    
+    // Validação e envio do formulário de boas-vindas
+    welcomeForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Limpar mensagens de erro anteriores
+      nameError.textContent = '';
+      welcomeSuccess.style.display = 'none';
+      
+      const nome = professionalNameInput.value.trim();
+      const especialidade = professionalSpecialtyInput.value.trim();
+      
+      // Validação simples
+      if (nome.length < 3) {
+        nameError.textContent = 'Por favor, informe seu nome completo (mínimo 3 caracteres).';
+        return;
+      }
+      
+      // Salvar dados no IndexedDB
+      saveProfissionalData(nome, especialidade);
+    });
+    
+    // Botão para alterar nome
+    changeNameBtn.addEventListener('click', function() {
+      welcomeScreen.style.display = 'flex';
+      dashboardScreen.style.display = 'none';
+      
+      // Preencher o formulário com os dados atuais
+      const transaction = db.transaction(["profissional"], "readonly");
+      const objectStore = transaction.objectStore("profissional");
+      const request = objectStore.get(1);
+      
+      request.onsuccess = function(event) {
+        const profissionalData = event.target.result;
+        if (profissionalData) {
+          professionalNameInput.value = profissionalData.nome;
+          professionalSpecialtyInput.value = profissionalData.especialidade || '';
+        }
+      };
+    });
+    
+    // Botão de nova avaliação (para implementação futura)
+    newAssessmentBtn.addEventListener('click', function() {
+      alert('Funcionalidade de Nova Avaliação será implementada em breve!');
+    });
+
+    // Registrar o Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('Service Worker registrado com sucesso:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('Falha ao registrar o Service Worker:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
