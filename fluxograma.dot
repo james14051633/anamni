@@ -1,0 +1,26 @@
+// Fluxograma da Calculadora de Desenvolvimento Motor
+
+digraph G {
+  // Configurações do gráfico
+  rankdir=TB;
+  node [shape=box, style="rounded,filled", fillcolor=lightblue, fontname="Arial"];
+  edge [fontname="Arial"];
+  
+  // Nós
+  inicio [label="Início", shape=oval];
+  entrada_dados [label="Entrada de Dados\n- Idade da criança\n- Prematuridade\n- Idade gestacional (se prematuro)"];
+  selecao_marcos [label="Seleção de Marcos Motores\n- Lista de marcos relevantes para a idade\n- Marcar os alcançados"];
+  processamento [label="Processamento\n- Cálculo do percentual\n- Classificação\n- Idade equivalente"];
+  resultado [label="Exibição de Resultados\n- Percentual\n- Classificação\n- Gráfico comparativo\n- Recomendações"];
+  opcoes [label="Opções\n- Imprimir/Salvar\n- Reiniciar\n- Informações adicionais"];
+  fim [label="Fim", shape=oval];
+  
+  // Conexões
+  inicio -> entrada_dados;
+  entrada_dados -> selecao_marcos;
+  selecao_marcos -> processamento;
+  processamento -> resultado;
+  resultado -> opcoes;
+  opcoes -> fim;
+  opcoes -> entrada_dados [label="Reiniciar"];
+}

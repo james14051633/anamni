@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Desenvolvimento Motor</title>
+  <style>
+    /* Reset e estilos base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Layout principal */
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho */
+    .app-header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .app-header a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Conteúdo principal */
+    .app-main {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* Rodapé */
+    .app-footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 14px;
+      border-top: 1px solid #eee;
+    }
+
+    /* Cartões de autenticação */
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+    }
+
+    .auth-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .auth-card h2 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .auth-subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    /* Formulários */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+
+    .form-group input.error {
+      border-color: #f44336;
+    }
+
+    .form-error {
+      color: #f44336;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    /* Botões */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
+      text-align: center;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3e8e41;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary:disabled {
+      background-color: #a5d6a7;
+      cursor: not-allowed;
+    }
+
+    .btn-loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .btn-loading::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin: -10px 0 0 -10px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Links */
+    .auth-links {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .auth-links a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Alertas e mensagens */
+    .alert {
+      padding: 12px 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      border-left: 4px solid;
+    }
+
+    .alert-error {
+      background-color: #ffebee;
+      border-color: #f44336;
+      color: #d32f2f;
+    }
+
+    .alert-success {
+      background-color: #e8f5e9;
+      border-color: #4caf50;
+      color: #2e7d32;
+    }
+
+    .alert-warning {
+      background-color: #fff8e1;
+      border-color: #ffc107;
+      color: #ff8f00;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .app-container {
+        padding: 10px;
+      }
+      
+      .app-header {
+        padding: 15px;
+      }
+      
+      .app-main {
+        padding: 20px;
+      }
+      
+      .auth-card {
+        padding: 20px;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+      }
+    }
+
+    /* Acessibilidade */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    /* Formulário em etapas */
+    .form-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .form-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+
+    .form-step::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background-color: #ddd;
+      z-index: 1;
+    }
+
+    .form-step:last-child::after {
+      display: none;
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #ddd;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-active .step-number {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .step-completed .step-number {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .step-completed .step-number::after {
+      content: '✓';
+    }
+
+    .step-label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .step-active .step-label {
+      color: #4CAF50;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1><a href="/">Calculadora de Desenvolvimento Motor</a></h1>
+    </header>
+
+    <main class="app-main">
+      <div class="auth-container">
+        <div class="auth-card">
+          <h2>Login</h2>
+          <p class="auth-subtitle">Acesse sua conta para continuar</p>
+          
+          <!-- Alerta de erro (inicialmente oculto) -->
+          <div class="alert alert-error" id="login-error" style="display: none;">
+            Email ou senha incorretos. Por favor, verifique suas credenciais.
+          </div>
+          
+          <form id="login-form">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Seu email" 
+                required
+                autocomplete="email"
+              >
+              <div class="form-error" id="email-error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="password">Senha</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Sua senha" 
+                required
+                autocomplete="current-password"
+              >
+              <div class="form-error" id="password-error"></div>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn btn-primary" 
+              id="login-button"
+            >
+              Entrar
+            </button>
+          </form>
+          
+          <div class="auth-links">
+            <p>
+              Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Baseado em escalas e marcos de desenvolvimento reconhecidos cientificamente.</p>
+      <p>© 2025 Calculadora de Desenvolvimento Motor</p>
+    </footer>
+  </div>
+
+  <script>
+    // Validação do formulário de login
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const loginButton = document.getElementById('login-button');
+      const loginError = document.getElementById('login-error');
+      const emailError = document.getElementById('email-error');
+      const passwordError = document.getElementById('password-error');
+      
+      // Validação em tempo real do email
+      emailInput.addEventListener('input', function() {
+        if (emailInput.validity.valid) {
+          emailInput.classList.remove('error');
+          emailError.textContent = '';
+        } else {
+          validateEmail();
+        }
+      });
+      
+      // Validação em tempo real da senha
+      passwordInput.addEventListener('input', function() {
+        if (passwordInput.value.length >= 6) {
+          passwordInput.classList.remove('error');
+          passwordError.textContent = '';
+        } else {
+          validatePassword();
+        }
+      });
+      
+      // Validação no envio do formulário
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Limpar mensagens de erro anteriores
+        loginError.style.display = 'none';
+        emailError.textContent = '';
+        passwordError.textContent = '';
+        emailInput.classList.remove('error');
+        passwordInput.classList.remove('error');
+        
+        let isValid = true;
+        
+        // Validar email
+        if (!emailInput.validity.valid) {
+          isValid = false;
+          validateEmail();
+        }
+        
+        // Validar senha
+        if (passwordInput.value.length < 6) {
+          isValid = false;
+          validatePassword();
+        }
+        
+        if (isValid) {
+          // Mostrar estado de carregamento
+          loginButton.disabled = true;
+          loginButton.classList.add('btn-loading');
+          
+          // Simular autenticação (em produção, isso seria uma chamada real)
+          setTimeout(function() {
+            // Simulação de credenciais para demonstração
+            if (emailInput.value === 'demo@exemplo.com' && passwordInput.value === 'senha123') {
+              // Login bem-sucedido - redirecionar para dashboard
+              window.location.href = '/dashboard';
+            } else {
+              // Login falhou - mostrar erro
+              loginButton.disabled = false;
+              loginButton.classList.remove('btn-loading');
+              loginError.style.display = 'block';
+            }
+          }, 1500);
+        }
+      });
+      
+      // Funções de validação
+      function validateEmail() {
+        if (emailInput.validity.valueMissing) {
+          emailInput.classList.add('error');
+          emailError.textContent = 'Por favor, informe seu email.';
+        } else if (emailInput.validity.typeMismatch) {
+          emailInput.classList.add('error');
+          emailError.textContent = 'Por favor, informe um email válido.';
+        }
+      }
+      
+      function validatePassword() {
+        if (passwordInput.validity.valueMissing) {
+          passwordInput.classList.add('error');
+          passwordError.textContent = 'Por favor, informe sua senha.';
+        } else if (passwordInput.value.length < 6) {
+          passwordInput.classList.add('error');
+          passwordError.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
